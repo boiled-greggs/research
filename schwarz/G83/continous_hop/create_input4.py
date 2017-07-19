@@ -37,22 +37,31 @@ def add_orb(orb, out, length):
             out.write("["+orb[i][0]+", "+orb[i][1]+", "+orb[i][2]+"]")
     out.write("]\n\n")
 
-def set_onsite(length):
+def set_onsite(length, octs):
     out.write("my_model.set_onsite([")
     for i in range(length):
         if i < length - 1 and (i+1)%5 != 0:
-            out.write("delta, ")
+            if i in octs: 
+                out.write("delta_o, ")
+            else:
+                out.write("delta_h, ")
         elif i < length - 1 and (i+1)%5 == 0:
-            out.write("delta, \\"+"\n\t")
+            if i in octs:
+                out.write("delta_o, \\"+"\n\t")
+            else:
+                out.write("delta_h, \\"+"\n\t")
         else:
-            out.write("delta])\n\n")
+            if i in octs:
+                out.write("delta_o])\n\n")
+            else:
+                out.write("delta_h])\n\n")
 
 def set_hops(lat, orb, length, maxi):
     out.write("# set hopping parameters for connected orbitals\n")
     out.write("# (amplitude, i, j, [lattice vector to cell containing j])\n")
     m = maxi - .5
     t0 = 2.8
-    d0 = 1.42
+    d0 = 1.46
     for i in range(0, length):
         for j in range(i+1, length):
             orb_i_real = []
@@ -225,9 +234,10 @@ if __name__ == "__main__":
     add_orb(orb, out, length)
     
     out.write("my_model = tb_model(3, 3, lat, orb)\n\n# set model parameters\n")
-    out.write("delta = 0.0\nt1 = -2.8\nt2 = -0.09\nt3 = -.3\n\n")
+    out.write("delta_o = -0.5\ndelta_h = 0.0\nt1 = -2.8\nt2 = -0.09\nt3 = -.3\n\n")
     
-    set_onsite(length)
+    oct_orbs = [685, 767, 712, 139, 140, 162, 149, 682, 427, 738, 741, 479, 425, 740, 743, 481, 513, 593, 540, 511, 514, 595, 541, 510, 457, 539, 484, 453, 456, 538, 483, 454, 118, 94, 509, 542, 595, 515, 512, 103, 89, 452, 455, 537, 482, 79, 80, 102, 653, 598, 566, 569, 651, 596, 568, 571, 656, 425, 628, 708, 655, 626, 629, 709, 110, 132, 119, 567, 570, 652, 597, 109, 133, 624, 627, 707, 654, 623, 124, 148, 683, 765, 710, 681, 684, 766, 711, 680, 426, 737, 154, 88, 74, 739, 742, 480]
+    set_onsite(length, oct_orbs)
     
     maxi = 0.0
     for i in range(length):

@@ -95,7 +95,7 @@ ax.set_title(structure + ' band structure')
 ax.set_xlabel('Path in k-space')
 ax.set_ylabel(r'$E$'+'–'+r'$E_f$')
 
-ax.set_ylim([-2, 2])
+ax.set_ylim([-1, 1])
 
 for i in range(len(energy)):
     for j in range(len(energy[i])):
