@@ -86,7 +86,7 @@ fig, ax = plot.subplots(figsize=(3,4))
 nodes = [0.0, 1.0000, 1.7071, 2.2071, 3.0731, 3.7802]
 label = (r'$\Gamma$', r'$H$', r'$N$', r'$P$', r'$\Gamma$', r'$N$')
 
-ax.set_xticks(nodes)
+ax.set_xticks(node_x)
 ax.set_xticklabels(label)
 
 for n in range(len(nodes)):
@@ -96,7 +96,7 @@ ax.set_title('P80 band structure')
 ax.set_xlabel('Path in k-space')
 ax.set_ylabel(r'$E$'+'–'+r'$E_f$')
 
-ax.set_ylim([-6, 6])
+#ax.set_ylim([-6, 6])
 
 for i in range(len(energy)):
     for j in range(len(energy[i])):
