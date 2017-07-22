@@ -50,10 +50,22 @@ def set_onsite(length):
 def set_hops(lat, orb, length, maxi):
     out.write("# set hopping parameters for connected orbitals\n")
     out.write("# (amplitude, i, j, [lattice vector to cell containing j])\n")
-    m = maxi - .5
+    m = maxi - .8
     t0 = 2.8
     d0 = 1.42
     for i in range(0, length):
+        for j in range(i+1, length):
+            orb_i_real = []
+            orb_j_real = []
+            for y in range(3):
+                orb_i_y = orb[i][0]*lat[0][y] + orb[i][1]*lat[1][y] + orb[i][2]*lat[2][y]
+                orb_i_real.append(orb_i_y)
+                orb_j_y = orb[j][0]*lat[0][y] + orb[j][1]*lat[1][y] + orb[j][2]*lat[2][y]
+                orb_j_real.append(orb_j_y)
+            dist = np.sqrt((orb_i_real[0]-orb_j_real[0])**2 + (orb_i_real[1]-orb_j_real[1])**2 + (orb_i_real[2]-orb_j_real[2])**2)
+            t = t0*np.exp(-2.*(dist/d0 - 1)) + 0.
+            if dist < 5.6 and dist > 0.01:
+                out.write("my_model.set_hop(%.4f, %d, %d, [0, 0, 0])\n" %(t, i, j))
         if orb[i][0] > m:
             # shift structure by positive lat_vec_a and check
             orb_cp = copy.deepcopy(orb)
@@ -68,8 +80,8 @@ def set_hops(lat, orb, length, maxi):
                     orb_j_y = orb_cp[j][0]*lat[0][y] + orb_cp[j][1]*lat[1][y] + orb_cp[j][2]*lat[2][y]
                     orb_j_real.append(orb_j_y)
                 dist = np.sqrt((orb_i_real[0]-orb_j_real[0])**2 + (orb_i_real[1]-orb_j_real[1])**2 + (orb_i_real[2]-orb_j_real[2])**2)
-                t = t0*np.exp(-3.37*(dist/d0 - 1)) + .15
-                if dist < 3.1 and dist > 0.01:
+                t = t0*np.exp(-2.*(dist/d0 - 1)) + 0.
+                if dist < 5.6 and dist > 0.01:
                     out.write("my_model.set_hop(%.4f, %d, %d, [1, 0, 0])\n" %(t, i, j))
         elif orb[i][1] > m:
             # shift structure by positive lat_vec_b and check
@@ -85,8 +97,8 @@ def set_hops(lat, orb, length, maxi):
                     orb_j_y = orb_cp[j][0]*lat[0][y] + orb_cp[j][1]*lat[1][y] + orb_cp[j][2]*lat[2][y]
                     orb_j_real.append(orb_j_y)
                 dist = np.sqrt((orb_i_real[0]-orb_j_real[0])**2 + (orb_i_real[1]-orb_j_real[1])**2 + (orb_i_real[2]-orb_j_real[2])**2)
-                t = t0*np.exp(-3.37*(dist/d0 - 1)) + .15
-                if dist < 3.1 and dist > 0.01:
+                t = t0*np.exp(-2.*(dist/d0 - 1)) + 0.
+                if dist < 5.6 and dist > 0.01:
                     out.write("my_model.set_hop(%.4f, %d, %d, [0, 1, 0])\n" %(t, i, j))
         elif orb[i][2] > m:
             # shift structure by positive lat_vec_c and check
@@ -102,8 +114,8 @@ def set_hops(lat, orb, length, maxi):
                     orb_j_y = orb_cp[j][0]*lat[0][y] + orb_cp[j][1]*lat[1][y] + orb_cp[j][2]*lat[2][y]
                     orb_j_real.append(orb_j_y)
                 dist = np.sqrt((orb_i_real[0]-orb_j_real[0])**2 + (orb_i_real[1]-orb_j_real[1])**2 + (orb_i_real[2]-orb_j_real[2])**2)
-                t = t0*np.exp(-3.37*(dist/d0 - 1)) + .15
-                if dist < 3.1 and dist > 0.01:
+                t = t0*np.exp(-2.*(dist/d0 - 1)) + 0.
+                if dist < 5.6 and dist > 0.01:
                     out.write("my_model.set_hop(%.4f, %d, %d, [0, 0, 1])\n" %(t, i, j))
 """
         if orb[i][0] > m and orb[i][1] > m:
@@ -121,8 +133,8 @@ def set_hops(lat, orb, length, maxi):
                     orb_j_y = orb_cp[j][0]*lat[0][y] + orb_cp[j][1]*lat[1][y] + orb_cp[j][2]*lat[2][y]
                     orb_j_real.append(orb_j_y)
                 dist = np.sqrt((orb_i_real[0]-orb_j_real[0])**2 + (orb_i_real[1]-orb_j_real[1])**2 + (orb_i_real[2]-orb_j_real[2])**2)
-                t = t0*np.exp(-3.37*(dist/d0 - 1)) + .15
-                if dist < 3.1 and dist > 0.01:
+                t = t0*np.exp(-2.*(dist/d0 - 1)) + 0.
+                if dist < 5.6 and dist > 0.01:
                     out.write("my_model.set_hop(%.4f, %d, %d, [1, 1, 0])\n" %(t, i, j))
         if orb[i][0] > m and orb[i][2] > m:
             #shift by both lattice vectors
@@ -139,8 +151,8 @@ def set_hops(lat, orb, length, maxi):
                     orb_j_y = orb_cp[j][0]*lat[0][y] + orb_cp[j][1]*lat[1][y] + orb_cp[j][2]*lat[2][y]
                     orb_j_real.append(orb_j_y)
                 dist = np.sqrt((orb_i_real[0]-orb_j_real[0])**2 + (orb_i_real[1]-orb_j_real[1])**2 + (orb_i_real[2]-orb_j_real[2])**2)
-                t = t0*np.exp(-3.37*(dist/d0 - 1)) + .15
-                if dist < 3.1 and dist > 0.01:
+                t = t0*np.exp(-2.*(dist/d0 - 1)) + 0.
+                if dist < 5.6 and dist > 0.01:
                     out.write("my_model.set_hop(%.4f, %d, %d, [1, 0, 1])\n" %(t, i, j))
         if orb[i][1] > m and orb[i][2] > m:
             #shift by both lattice vectors
@@ -157,8 +169,8 @@ def set_hops(lat, orb, length, maxi):
                     orb_j_y = orb_cp[j][0]*lat[0][y] + orb_cp[j][1]*lat[1][y] + orb_cp[j][2]*lat[2][y]
                     orb_j_real.append(orb_j_y)
                 dist = np.sqrt((orb_i_real[0]-orb_j_real[0])**2 + (orb_i_real[1]-orb_j_real[1])**2 + (orb_i_real[2]-orb_j_real[2])**2)
-                t = t0*np.exp(-3.37*(dist/d0 - 1)) + .15
-                if dist < 3.1 and dist > 0.01:
+                t = t0*np.exp(-2.*(dist/d0 - 1)) + 0.
+                if dist < 5.6 and dist > 0.01:
                     out.write("my_model.set_hop(%.4f, %d, %d, [0, 1, 1])\n" %(t, i, j))
         if orb[i][0] > m and orb[i][1] > m and orb[i][2] > m:
             # shift by all lattice vectors
@@ -176,22 +188,10 @@ def set_hops(lat, orb, length, maxi):
                     orb_j_y = orb_cp[j][0]*lat[0][y] + orb_cp[j][1]*lat[1][y] + orb_cp[j][2]*lat[2][y]
                     orb_j_real.append(orb_j_y)
                 dist = np.sqrt((orb_i_real[0]-orb_j_real[0])**2 + (orb_i_real[1]-orb_j_real[1])**2 + (orb_i_real[2]-orb_j_real[2])**2)
-                t = t0*np.exp(-3.37*(dist/d0 - 1)) + .15
-                if dist < 3.1 and dist > 0.01:
+                t = t0*np.exp(-2.*(dist/d0 - 1)) + 0.
+                if dist < 5.6 and dist > 0.01:
                     out.write("my_model.set_hop(%.4f, %d, %d, [1, 1, 1])\n" %(t, i, j))
 """
-        for j in range(i+1, length):
-            orb_i_real = []
-            orb_j_real = []
-            for y in range(3):
-                orb_i_y = orb[i][0]*lat[0][y] + orb[i][1]*lat[1][y] + orb[i][2]*lat[2][y]
-                orb_i_real.append(orb_i_y)
-                orb_j_y = orb[j][0]*lat[0][y] + orb[j][1]*lat[1][y] + orb[j][2]*lat[2][y]
-                orb_j_real.append(orb_j_y)
-            dist = np.sqrt((orb_i_real[0]-orb_j_real[0])**2 + (orb_i_real[1]-orb_j_real[1])**2 + (orb_i_real[2]-orb_j_real[2])**2)
-            t = t0*np.exp(-3.37*(dist/d0 - 1)) + .15
-            if dist < 3.1 and dist > 0.01:
-                out.write("my_model.set_hop(%.4f, %d, %d, [0, 0, 0])\n" %(t, i, j))
 
 
 
@@ -245,7 +245,7 @@ if __name__ == "__main__":
     
     out.write("\n"+"my_model.display()\n\n") # print model
 
-    out.write("path = [ [0., 0., 0.], [-0.5, 0.5, 0.5], [0., .5, 0.], [.25, .25, .25], [0., 0., 0.], [0., 0.5, 0.] ]\n")
+    out.write("path = [ [0., 0., 0.], [0.5, -0.5, 0.5], [0., 0., 0.5], [.25, .25, .25], [0., 0., 0.], [0., 0., 0.5] ]\n")
     out.write("label = (r'$\Gamma $',r'$H$', r'$N$', r'$P$', r'$\Gamma $', r'$N$')\n")
     out.write("nk = 800\n\n")
 
