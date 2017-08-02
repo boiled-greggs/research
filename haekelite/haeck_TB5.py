@@ -4,6 +4,7 @@ from __future__ import print_function
 from pythtb import *
 import numpy as np
 import pylab as plt
+from scipy.interpolate import spline
 
 lat = [[7.0830001831, 0.0000000000, 0.0000000000], \
 	[-3.5415000916, 6.1340580936, 0.0000000000], \
@@ -31,8 +32,8 @@ my_model = tb_model(3, 3, lat, orb)
 # set model parameters
 delta = 0.0
 t1 = -1.
-t2 = -0.03
-t3 = -.1
+t2 = 0.0
+t3 = 0.
 t4 = 0.0
 t5 = 0.0
 
@@ -206,12 +207,39 @@ for n in range(len(k_node)):
 	nodes.write(label[n] + '\t' + str(k_node[n]) + '\n')
 fig.savefig('haeck-2.eps')
 
-k_vec = my_model.k_uniform_mesh([7, 7, 7])
+k_vec = my_model.k_uniform_mesh([10, 10, 1])
 evals2 = my_model.solve_all(k_vec)
 
 evals2 = evals2.flatten()
 
 print('Plotting DoS...')
+
+for val in evals2:
+    print(val)
+
+dosval = []
+energy = []
+it = 0.
+prev = evals2[0]
+for i in range(len(evals2)):
+    if evals2[i] - prev >= 0.005:
+        dosval.append(it)
+        prev = evals2[i]
+        it = 0.
+        e = evals2[i]
+        energy.append(e)
+    else:
+        it += 1
+
+for thing in dosval:
+    print(thing)
+"""
+xnew = np.linspace(energy[0], energy[45], 400)
+smooth = spline(energy, dosval, xnew)
+"""
+fig, ax = plt.subplots()
+ax.plot(energy, dosval)
+fig.savefig('bbsmooth.eps')
 
 fig, ax = plt.subplots()
 ax.hist(evals2, 80,range=(-4.,4.))
@@ -222,5 +250,5 @@ ax.set_xlabel('Band energy')
 ax.set_ylabel('Number of states')
 # make an PDF figure of a plot
 fig.tight_layout()
-fig.savefig('haeck_dos2.pdf')
+fig.savefig('haeck_dos2.eps')
 print('Done.')
