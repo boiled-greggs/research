@@ -50,7 +50,7 @@ def set_onsite(length):
 def set_hops(lat, orb, length, maxi):
     out.write("# set hopping parameters for connected orbitals\n")
     out.write("# (amplitude, i, j, [lattice vector to cell containing j])\n")
-    m = maxi - .1
+    m = maxi - .4
     t0 = 2.8
     d0 = 1.42
     for i in range(0, length):
@@ -129,7 +129,7 @@ def set_hops(lat, orb, length, maxi):
                     out.write("my_model.set_hop(t2, %d, %d, [0, 0, 1])\n" %(i, j))
                 elif dist <= 4.0 and dist > 2.8:
                     out.write("my_model.set_hop(t3, %d, %d, [0, 0, 1])\n" %(i, j))
-"""
+        
         if orb[i][0] > m and orb[i][1] > m:
             #shift by both lattice vectors
             orb_cp = copy.deepcopy(orb)
@@ -151,10 +151,6 @@ def set_hops(lat, orb, length, maxi):
                     out.write("my_model.set_hop(t2, %d, %d, [1, 1, 0])\n" %(i, j))
                 elif dist <= 4.0 and dist > 2.8:
                     out.write("my_model.set_hop(t3, %d, %d, [1, 1, 0])\n" %(i, j))
-                elif dist <= 5.0 and dist > 4.0:
-                    out.write("my_model.set_hop(t4, %d, %d, [1, 1, 0])\n" %(i, j))
-                elif dist <= 6.0 and dist > 5.0:
-                    out.write("my_model.set_hop(t5, %d, %d, [1, 1, 0])\n" %(i, j))
         if orb[i][0] > m and orb[i][2] > m:
             #shift by both lattice vectors
             orb_cp = copy.deepcopy(orb)
@@ -176,10 +172,6 @@ def set_hops(lat, orb, length, maxi):
                     out.write("my_model.set_hop(t2, %d, %d, [1, 0, 1])\n" %(i, j))
                 elif dist <= 4.0 and dist > 2.8:
                     out.write("my_model.set_hop(t3, %d, %d, [1, 0, 1])\n" %(i, j))
-                elif dist <= 5.0 and dist > 4.0:
-                    out.write("my_model.set_hop(t4, %d, %d, [1, 0, 1])\n" %(i, j))
-                elif dist <= 6.0 and dist > 5.0:
-                    out.write("my_model.set_hop(t5, %d, %d, [1, 0, 1])\n" %(i, j))
         if orb[i][1] > m and orb[i][2] > m:
             #shift by both lattice vectors
             orb_cp = copy.deepcopy(orb)
@@ -201,10 +193,6 @@ def set_hops(lat, orb, length, maxi):
                     out.write("my_model.set_hop(t2, %d, %d, [0, 1, 1])\n" %(i, j))
                 elif dist <= 4.0 and dist > 2.8:
                     out.write("my_model.set_hop(t3, %d, %d, [0, 1, 1])\n" %(i, j))
-                elif dist <= 5.0 and dist > 4.0:
-                    out.write("my_model.set_hop(t4, %d, %d, [0, 1, 1])\n" %(i, j))
-                elif dist <= 6.0 and dist > 5.0:
-                    out.write("my_model.set_hop(t5, %d, %d, [0, 1, 1])\n" %(i, j))
         if orb[i][0] > m and orb[i][1] > m and orb[i][2] > m:
             # shift by all lattice vectors
             orb_cp = copy.deepcopy(orb)
@@ -227,11 +215,6 @@ def set_hops(lat, orb, length, maxi):
                     out.write("my_model.set_hop(t2, %d, %d, [1, 1, 1])\n" %(i, j))
                 elif dist <= 4.0 and dist > 2.8:
                     out.write("my_model.set_hop(t3, %d, %d, [1, 1, 1])\n" %(i, j))
-                elif dist <= 5.0 and dist > 4.0:
-                    out.write("my_model.set_hop(t4, %d, %d, [1, 1, 1])\n" %(i, j))
-                elif dist <= 6.0 and dist > 5.0:
-                    out.write("my_model.set_hop(t5, %d, %d, [1, 1, 1])\n" %(i, j))
-"""            
 
 
 

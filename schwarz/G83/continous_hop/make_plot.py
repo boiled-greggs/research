@@ -2,7 +2,7 @@
 #from matplotlib.figure import Figure
 #from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
 #from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
-import pylab as plot
+import pylab as plots
 import plotly
 import plotly.plotly as plt
 import plotly.graph_objs as go
@@ -79,9 +79,9 @@ layout = dict(title = 'P80 bands',
     yaxis = bandyaxis 
     )
 fig = go.Figure(data = data + vlines, layout = layout) 
-plt.iplot(fig, filename=structure+' bands')
+plt.plot(fig, filename=structure+' bands')
 
-fig, ax = plot.subplots(figsize=(3,4))
+fig, ax = plots.subplots(figsize=(3,4))
 
 label = (r'$\Gamma$', r'$H$', r'$N$', r'$\Gamma$', r'$P$', r'$H$', r'$N$', r'$P$')
 
@@ -95,7 +95,7 @@ ax.set_title(structure + ' band structure')
 ax.set_xlabel('Path in k-space')
 ax.set_ylabel(r'$E$'+'–'+r'$E_f$')
 
-ax.set_ylim([-1, 1])
+ax.set_ylim([-2, 2])
 
 for i in range(len(energy)):
     for j in range(len(energy[i])):
